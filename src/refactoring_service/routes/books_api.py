@@ -1,13 +1,11 @@
 from fastapi import APIRouter
+from services.book_service import BookService
 
 router = APIRouter()
-
-
-def add_id(book_id, storage=[]):
-    storage.append(book_id)
-    return storage
+book_service = BookService()
 
 
 @router.post("/add-id")
 async def add_id_view(new_id: int = 1):
-    return {"result": add_id(new_id)}
+    updated_data = book_service.add_item_and_get_all(new_id)
+    return {"result": updated_data}
