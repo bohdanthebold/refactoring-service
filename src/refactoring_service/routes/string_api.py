@@ -1,29 +1,19 @@
 from fastapi import APIRouter
+from services.string_service import StringService
 
 router = APIRouter()
-
-
-def transform_text(text, uppercase):
-    if uppercase:
-        return text.upper()
-    else:
-        return text.lower()
+string_service = StringService()
 
 
 @router.post("/capitalize-string")
 async def capitalize_string(s: str = "some text", is_uppercase: bool = True):
-    return {"result": transform_text(s, is_uppercase)}
+    result_string = string_service.transform_string(text=s, to_uppercase=is_uppercase)
+    return {"result": result_string}
 
 
 @router.post("/capitalize-list")
 async def capitalize_list(s: str = "first,second,third"):
-    input_list = s.split(",")
-    print(input_list)
-    # iterate over list
-    i = 0
-    while True:
-        input_list[i] = input_list[i].upper()
-        if i >= len(input_list) - 1:
-            break
-        i = i + 1
-    return {"result": input_list}
+    capitalized_list = string_service.convert_to_list_and_capitalize(
+        input_list_string=s
+    )
+    return {"result": capitalized_list}
