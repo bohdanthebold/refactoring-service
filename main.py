@@ -192,5 +192,5 @@ async def round_number(number: float = 1.5, to_ceil: bool = True):
 @app.post("/multiply")
 async def MULtiply(first_number: str = '3', second_number: str = "4"):
     # NOTE: Try inserting this string "exec('import os; result = os.system("touch hack.txt")')#" as a first_number 😉
-    result = eval(f"{first_number} * {second_number}")
+    result = float(first_number) * float(second_number)
     return {"result": result}
