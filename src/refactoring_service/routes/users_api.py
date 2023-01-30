@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 
@@ -43,14 +44,12 @@ async def is_valid_user(
 
 
 @router.get("/get-user-id")
-async def exc(username: str = "Paul"):
+async def get_user_id(username: str = "Paul"):
     user_ids = {"John": 12, "Anna": 2, "Jack": 10}
 
-    try:
-        return {"user_id": user_ids[username]}
-    except:
-        pass
-    return {"message": "User not found"}
+    if username not in user_ids.keys():
+        return JSONResponse(status_code=404, content={"message": "User not found"})
+    return {"user_id": user_ids[username]}
 
 
 def filter_items(is_published, items_list):

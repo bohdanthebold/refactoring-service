@@ -112,11 +112,16 @@ def test_send_email(api_test_client):
     assert response.status_code == 200
     assert response.json() == {"ok": True}
 
+def test_get_user(api_test_client):
+    username = "John"
+    response = api_test_client.get(f'/get-user-id?username={username}')
+    assert response.status_code == 200
+    assert response.json() == {"user_id": 12}
 
-def test_get_user_id(api_test_client):
+def test_get_user_id_not_found(api_test_client):
     username = "Paul"
     response = api_test_client.get(f'/get-user-id?username={username}')
-    assert response.status_code == 200  # TODO fix to 404
+    assert response.status_code == 404
     assert response.json() == {"message": "User not found"}
 
 

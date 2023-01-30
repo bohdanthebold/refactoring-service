@@ -5,6 +5,7 @@ app = FastAPI()
 
 SERVICE_FILENAME = "service.txt"
 
+
 @app.get("/get-service-name")
 async def service():
     with open(SERVICE_FILENAME, "r") as file:
