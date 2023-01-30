@@ -1,0 +1,28 @@
+[tool.black]
+target-version = ['py310']
+
+[tool.pylint.main]
+fail-under = 4
+disable = "C0114,C0115,C0116"
+
+[tool.pylint.format]
+max-line-length = 120
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "refactoring_service"
+version = "1.0"
+authors = [
+  { name = "Dmytro Martyniuk", email = "dmytro.martyniuk@intellias.com" },
+]
+description = "Some description"
+readme = "Readme.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
