@@ -3,12 +3,14 @@ from routes import users_api, string_api, books_api, email_api, date_api, math_a
 
 app = FastAPI()
 
+SERVICE_FILENAME = "service.txt"
 
 @app.get("/get-service-name")
 async def service():
-    file = open("service.txt", "r")
-    line = file.read()
-    return {"result": line}
+    with open(SERVICE_FILENAME, "r") as file:
+        file_content = file.read()
+        return {"result": file_content}
+
 
 app.include_router(books_api.router)
 app.include_router(date_api.router)
