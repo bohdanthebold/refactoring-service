@@ -9,7 +9,7 @@ help:
 pip:
 	pip install -r requirements.txt
 black:
-	python -m black -v src
+	python -m black -v src tests
 lint:
 	python -m pylint src
 test:
