@@ -1,83 +1,44 @@
-from typing import List
-
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 
-
-class DB:
-    # Fake db
-    def get_user_items(self):
-        return [
-            {"title": "1 item", "is_published": True},
-            {"title": "2 item", "is_published": False},
-            {"title": "3 item", "is_published": False},
-            {"title": "4 item", "is_published": True},
-        ]
-
-
-db = DB()
-
-
-class Item(BaseModel):
-    title: str
-
-
-class ItemList(BaseModel):
-    response: List[Item]
-
+from schemas import ItemList
+from services.user_service import UserService
 
 router = APIRouter()
+user_service = UserService()
 
 
 @router.get("/is-valid-user")
 async def is_valid_user(
     user: str = "Ahmed", age: int = 30, job: str = "data scientist"
 ):
-    if age >= 30:
-        if user == "Ahmed":
-            if job == "data scientist":
-                return {"result": True}
-            else:
-                return {"result": False}
-    return {"result": False}
+    result = user_service.is_valid_user(user, age, job)
+    return {"result": result}
 
 
 @router.get("/get-user-id")
 async def get_user_id(username: str = "Paul"):
-    user_ids = {"John": 12, "Anna": 2, "Jack": 10}
-
-    if username not in user_ids.keys():
+    user_ids = user_service.get_user_ids()
+    if username not in user_ids:
         return JSONResponse(status_code=404, content={"message": "User not found"})
     return {"user_id": user_ids[username]}
 
-
-def filter_items(is_published, items_list):
-    if is_published:
-        return list(filter(lambda x: x["is_published"], items_list))
-    else:
-        return list(filter(lambda x: not x["is_published"], items_list))
-
-
 @router.get("/items")
-async def items():
-    return {"response": filter_items(True, db.get_user_items())}
+async def items() -> ItemList:
+    return {"response": user_service.filter_items(is_published=True)}
 
 
 @router.get("/key/{key_id}")
 async def key(key_id: int = 2):
-    array = ["key1", "key2", "key3", "key4"]
-    for item_id in range(len(array)):
-        if item_id + 1 == key_id:
-            return {"result": array[item_id]}
+    result = user_service.get_key_by_id(key_id)
+    return {"result": result}
 
 
 @router.get("/number-in-both-lists/{key_id}")
 async def number_in_both_lists(key_id: int = 3):
+    #data should be moved to db, but not enough context
     array1 = [1, 2, 3, 4]
     array2 = [3, 4, 5, 6]
-    for item1 in array1:
-        for item2 in array2:
-            if item1 == key_id and item2 == key_id:
-                return {"result": True}
-    return {"result": False}
+    out = set(array1) & set(array2)
+    return {"result": key_id in out}
+
