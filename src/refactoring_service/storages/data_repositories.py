@@ -25,16 +25,19 @@ class DataRepository(ABC):
 class BookDataRepository(DataRepository):
     pass
 
+
 class KeyDataRepository(DataRepository):
     pass
 
-class UserItemsDataRepository(DataRepository):
 
+class UserItemsDataRepository(DataRepository):
     def filter(self, is_published=True):
-        return  [item for item in self.items if item["is_published"]==is_published]
+        return [item for item in self.items if item["is_published"] == is_published]
+
 
 class UserDataRepository(DataRepository):
     pass
+
 
 class KeyDataRepository(DataRepository):
     pass

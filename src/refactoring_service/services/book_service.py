@@ -1,6 +1,7 @@
 from storages.data_repositories import BookDataRepository
 from db.db import DB
 
+
 class BookService:
     def __init__(self, data_repository=None):
         self._data_repository = data_repository

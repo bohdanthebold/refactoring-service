@@ -1,13 +1,21 @@
-from storages.data_repositories import UserDataRepository, UserItemsDataRepository, KeyDataRepository
+from storages.data_repositories import (
+    UserDataRepository,
+    UserItemsDataRepository,
+    KeyDataRepository,
+)
 from db.db import DB
 
-class UserService:
 
-    def __init__(self,key_data_repository=None, user_data_repository=None, user_items_data_repository=None):
+class UserService:
+    def __init__(
+        self,
+        key_data_repository=None,
+        user_data_repository=None,
+        user_items_data_repository=None,
+    ):
         self._user_items_data_repository = user_items_data_repository
         self._user_data_repository = user_data_repository
         self._key_data_repository = key_data_repository
-
 
     @property
     def user_items_data_repository(self):
@@ -43,5 +51,8 @@ class UserService:
 
     def get_key_by_id(self, key_id):
         id_ = key_id - 1
-        return self.key_data_repository.get_by_id(id_) if self.key_data_repository.count() > id_ else None
-
+        return (
+            self.key_data_repository.get_by_id(id_)
+            if self.key_data_repository.count() > id_
+            else None
+        )

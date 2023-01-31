@@ -23,6 +23,7 @@ async def get_user_id(username: str = "Paul"):
         return JSONResponse(status_code=404, content={"message": "User not found"})
     return {"user_id": user_ids[username]}
 
+
 @router.get("/items")
 async def items() -> ItemList:
     return {"response": user_service.filter_items(is_published=True)}
@@ -36,9 +37,8 @@ async def key(key_id: int = 2):
 
 @router.get("/number-in-both-lists/{key_id}")
 async def number_in_both_lists(key_id: int = 3):
-    #data should be moved to db, but not enough context
+    # data should be moved to db, but not enough context
     array1 = [1, 2, 3, 4]
     array2 = [3, 4, 5, 6]
     out = set(array1) & set(array2)
     return {"result": key_id in out}
-
